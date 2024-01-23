@@ -22,6 +22,7 @@ export const Searcher = () => {
     register,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors, isValid, isSubmitting },
   } = useForm<SearcherForm>({
     mode: "onChange",
@@ -33,11 +34,15 @@ export const Searcher = () => {
   }, [search, setValue]);
 
   const onSubmit = handleSubmit(async ({ search }) => {
-    const { results, page, total_pages } = await searchMovies(search);
-    setMovies(results);
-    setSearch(search);
-    setPage(page);
-    setTotalPages(total_pages);
+    try {
+      const { results, page, total_pages } = await searchMovies(search);
+      setMovies(results);
+      setSearch(search);
+      setPage(page);
+      setTotalPages(total_pages);
+    } catch (error) {
+      setError("search", { message: "Ocurrió un error al buscar la película" });
+    }
   });
 
   return (

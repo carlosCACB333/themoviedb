@@ -15,7 +15,7 @@ export const useScrolledMovies = () => {
 
   const virtualizer = useVirtualizer({
     getScrollElement: () => parentRef.current,
-    count: movies.length,
+    count: movies?.length || 0,
     estimateSize: () => 400,
     overscan: 1,
   });
@@ -38,6 +38,9 @@ export const useScrolledMovies = () => {
         .then((res) => {
           addMovies(res.results);
           nextPage();
+        })
+        .catch((err) => {
+          console.log(err);
         })
         .finally(() => {
           setIsLoading(false);

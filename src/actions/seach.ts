@@ -17,6 +17,9 @@ export const searchMovies = async (
     },
   });
 
-  const data: SearchMovieResponse = await response.json();
-  return data;
+  const data = await response.json();
+  if (data.success === false) {
+    throw new Error(data.status_message);
+  }
+  return data as SearchMovieResponse;
 };
